@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "178549241698",
+    "project_id": "jouleport-c0a88",
+    "storage_bucket": "jouleport-c0a88.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178549241698:android:4dc8a7e5f9673c08d11e3b",
+        "android_client_info": {
+          "package_name": "com.example.ev_charging_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178549241698-c8l0ikrno4ia7c3pbqqank6p278oi5le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDth5Ae8NCJlYPTrRlAeF4EHesx5O0NmTo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178549241698-c8l0ikrno4ia7c3pbqqank6p278oi5le.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
