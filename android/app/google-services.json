@@ -29,6 +29,13 @@
             {
               "client_id": "178549241698-c8l0ikrno4ia7c3pbqqank6p278oi5le.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "178549241698-af6god8pdjtou5b6m04ntop2f97hthqq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.evChargingApp"
+              }
             }
           ]
         }

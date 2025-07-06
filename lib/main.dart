@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/booking_provider.dart';
+import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/app_theme.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'EV Charging App',
         theme: AppTheme.lightTheme,
-        home: const SplashScreen(),
+        //home: const SplashScreen(),
+         home: const OnboardingScreen(), 
         debugShowCheckedModeBanner: false,
       ),
     );

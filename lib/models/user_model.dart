@@ -1,3 +1,5 @@
+enum UserRole { user, owner }
+
 class UserModel {
   final String id;
   final String email;
@@ -26,11 +28,13 @@ class UserModel {
       phoneNumber: map['phoneNumber'] ?? '',
       name: map['name'] ?? '',
       role: UserRole.values.firstWhere(
-        (e) => e.toString() == 'UserRole.${map['role']}',
+        (e) => e.toString().split('.').last == map['role'],
         orElse: () => UserRole.user,
       ),
       isVerified: map['isVerified'] ?? false,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      createdAt: map['createdAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'])
+          : DateTime.now(),
       providerDetails: map['providerDetails'] != null
           ? ProviderDetails.fromMap(map['providerDetails'])
           : null,
@@ -50,8 +54,6 @@ class UserModel {
     };
   }
 }
-
-enum UserRole { user, owner }
 
 class ProviderDetails {
   final String address;
@@ -86,8 +88,8 @@ class ProviderDetails {
       chargingPortType: map['chargingPortType'] ?? '',
       pricePerHour: map['pricePerHour']?.toDouble() ?? 0.0,
       isOnline: map['isOnline'] ?? false,
-      availableSlots: (map['availableSlots'] as List?)
-              ?.map((slot) => TimeSlot.fromMap(slot))
+      availableSlots: (map['availableSlots'] as List<dynamic>?)
+              ?.map((slot) => TimeSlot.fromMap(slot as Map<String, dynamic>))
               .toList() ??
           [],
     );
@@ -123,8 +125,12 @@ class TimeSlot {
 
   factory TimeSlot.fromMap(Map<String, dynamic> map) {
     return TimeSlot(
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      startTime: map['startTime'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['startTime'])
+          : DateTime.now(),
+      endTime: map['endTime'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['endTime'])
+          : DateTime.now(),
       isBooked: map['isBooked'] ?? false,
       bookedBy: map['bookedBy'],
     );

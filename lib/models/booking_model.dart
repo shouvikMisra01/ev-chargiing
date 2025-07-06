@@ -1,3 +1,5 @@
+enum BookingStatus { pending, confirmed, active, completed, cancelled }
+
 class BookingModel {
   final String id;
   final String userId;
@@ -30,14 +32,20 @@ class BookingModel {
       id: map['id'] ?? '',
       userId: map['userId'] ?? '',
       providerId: map['providerId'] ?? '',
-      startTime: DateTime.fromMillisecondsSinceEpoch(map['startTime']),
-      endTime: DateTime.fromMillisecondsSinceEpoch(map['endTime']),
+      startTime: map['startTime'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['startTime'])
+          : DateTime.now(),
+      endTime: map['endTime'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['endTime'])
+          : DateTime.now(),
       totalAmount: map['totalAmount']?.toDouble() ?? 0.0,
       status: BookingStatus.values.firstWhere(
-        (e) => e.toString() == 'BookingStatus.${map['status']}',
+        (e) => e.toString().split('.').last == map['status'],
         orElse: () => BookingStatus.pending,
       ),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      createdAt: map['createdAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'])
+          : DateTime.now(),
       providerAddress: map['providerAddress'] ?? '',
       providerLatitude: map['providerLatitude']?.toDouble() ?? 0.0,
       providerLongitude: map['providerLongitude']?.toDouble() ?? 0.0,
@@ -60,5 +68,3 @@ class BookingModel {
     };
   }
 }
-
-enum BookingStatus { pending, confirmed, active, completed, cancelled }

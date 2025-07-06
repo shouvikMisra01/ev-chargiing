@@ -59,49 +59,69 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> registerWithEmail({
-    required String email,
-    required String password,
-    required String name,
-    required String phoneNumber,
-    required UserRole role,
-  }) async {
-    try {
-      _isLoading = true;
-      notifyListeners();
+  // REPLACE your old registerWithEmail function with this new one.
 
-      final credential = await _auth.createUserWithEmailAndPassword(
+Future<bool> registerWithEmail({
+  required String email,
+  required String password,
+  required String name,
+  required String phoneNumber,
+  required UserRole role,
+}) async {
+  try {
+    _isLoading = true;
+    notifyListeners();
+
+    // We no longer need to save the return value 'credential' because it's causing the crash.
+    // We just need to wait for it to complete.
+    await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // After the user is created, _auth.currentUser will be updated.
+    // We get the new user directly from the auth instance.
+    User? freshlyCreatedUser = _auth.currentUser;
+
+    if (freshlyCreatedUser != null) {
+      final userModel = UserModel(
+        id: freshlyCreatedUser.uid, // Use the UID from the currentUser
         email: email,
-        password: password,
+        phoneNumber: phoneNumber,
+        name: name,
+        role: role,
+        createdAt: DateTime.now(),
       );
 
-      if (credential.user != null) {
-        final userModel = UserModel(
-          id: credential.user!.uid,
-          email: email,
-          phoneNumber: phoneNumber,
-          name: name,
-          role: role,
-          createdAt: DateTime.now(),
-        );
+      // Now create the document in Firestore.
+      await _firestore
+          .collection('users')
+          .doc(freshlyCreatedUser.uid)
+          .set(userModel.toMap());
 
-        await _firestore
-            .collection('users')
-            .doc(credential.user!.uid)
-            .set(userModel.toMap());
-
-        _userModel = userModel;
-        return true;
-      }
-      return false;
-    } catch (e) {
-      print('Registration error: $e');
-      return false;
-    } finally {
+      // The _onAuthStateChanged listener will automatically call _loadUserModel,
+      // which will load the user data into the _userModel variable.
+      // So we don't need to set it here.
+      
+      // We manually set the loading state back to false and notify listeners.
       _isLoading = false;
       notifyListeners();
+      return true;
     }
+
+    // If for some reason currentUser is null, we fail gracefully.
+    _isLoading = false;
+    notifyListeners();
+    return false;
+    
+  } catch (e) {
+    // This will now only catch legitimate errors, like 'email-already-in-use'.
+    print('Registration error: $e');
+    _isLoading = false;
+    notifyListeners();
+    return false;
   }
+}
 
   Future<void> signOut() async {
     await _auth.signOut();
