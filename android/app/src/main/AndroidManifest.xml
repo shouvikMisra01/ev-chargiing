@@ -12,8 +12,9 @@
         android:label="EV Charging App"
         android:name="${applicationName}"  android:icon="@mipmap/ic_launcher">
         
+        <!-- Google Maps API Key - Auto-injected from .env via build.gradle -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="YOUR_Maps_API_KEY"/>
+                   android:value="${GOOGLE_MAPS_API_KEY}"/>
         
         <activity
             android:name=".MainActivity"

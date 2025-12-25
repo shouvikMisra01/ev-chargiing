@@ -5,6 +5,19 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// Load .env file and extract API keys
+def envFile = rootProject.file('../.env')
+def envProperties = new Properties()
+if (envFile.exists()) {
+    envFile.withInputStream { stream ->
+        envProperties.load(stream)
+    }
+} else {
+    println "Warning: .env file not found. Using placeholder for Google Maps API key."
+}
+
+def googleMapsApiKey = envProperties.getProperty('GOOGLE_MAPS_API_KEY', 'YOUR_GOOGLE_MAPS_API_KEY_HERE')
+
 android {
     namespace = "com.example.ev_charging_app"
     compileSdk = flutter.compileSdkVersion
@@ -28,6 +41,11 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Inject API keys from .env into AndroidManifest.xml
+        manifestPlaceholders = [
+            GOOGLE_MAPS_API_KEY: googleMapsApiKey
+        ]
     }
 
     buildTypes {

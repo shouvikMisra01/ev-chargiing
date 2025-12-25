@@ -1,0 +1,5 @@
+// iOS Configuration from .env
+// This file is AUTO-GENERATED - DO NOT EDIT MANUALLY
+// Run: ./scripts/generate_config.sh to regenerate
+
+GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE
